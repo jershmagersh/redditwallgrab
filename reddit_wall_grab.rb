@@ -33,7 +33,7 @@ OptionParser.new do |opts|
   	@options[:imgur_only] = true
   end
   
-  opts.on("-d dir", "Directory to downloads wallpapers to. Default is ./wallpapers.") do |dir|
+  opts.on("-d dir", "Directory to download wallpapers to. Default is ./wallpapers.") do |dir|
   	@options[:dir] = dir 
   end
 end.parse!
