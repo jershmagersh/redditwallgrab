@@ -20,11 +20,7 @@ OptionParser.new do |opts|
   opts.on("-t time", "Grab the top wallpapers with specified time (hour, day, month, year, all).") do |time|
   	@options[:top] = time
   end
-  
-  opts.on("-a", "Grab all wallpapers if top is specified.") do
-  	@options[:all] = true
-  end
-  
+
   opts.on("-l N", "If We should limit how many 'pages' we traverse. Default is 20.") do |n|
   	@options[:limit] = n
   end  
