@@ -6,7 +6,7 @@ require 'json'
 
 @options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: reddit_wallpaper_grabber.rb [options]"
+  opts.banner = "Usage: reddit_wall_grab.rb [options]"
   
   opts.on("-v", "Verbose output.") do
     @options[:verbose] = true
