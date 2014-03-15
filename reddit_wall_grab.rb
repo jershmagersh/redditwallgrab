@@ -128,16 +128,18 @@ end
 
 def download_image(url, dir)
 	filename = parse_fname(url)
-	
-	Net::HTTP.start(URI.parse(url).host) do |http|
-		resp = http.get(URI.parse(url).request_uri)
+	begin
+		Net::HTTP.start(URI.parse(url).host) do |http|
+			resp = http.get(URI.parse(url).request_uri)
 		
-		open("#{dir}/#{filename}", "wb") do |file|
-			file.write(resp.body)
+			open("#{dir}/#{filename}", "wb") do |file|
+				file.write(resp.body)
+			end
 		end
+		puts "#{filename} downloaded!" if @options[:verbose]
+	rescue
+		puts "There was an error downloading this, skipping..."
 	end
-	
-	puts "#{filename} downloaded!" if @options[:verbose]
 end
 
 def parse_fname(url)
