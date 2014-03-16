@@ -26,7 +26,7 @@ Basically I was sick of downloading each awesome wallpaper I saw on the /r/wallp
 >	-d dir                           Directory to download wallpapers to. Default is ./wallpapers. 
 
 Sweet, so now that you have the help output go ahead and provide command line arguments, for example if I wanted the top wallpapers of all time, and wanted the top 5000 of them I can do:
->joshs-mbp:reddit_wallpaper_grabber jr$ ruby reddit_wall_grab.rb -t all -l 200
+>rocket:reddit_wallpaper_grabber jm$ ruby reddit_wall_grab.rb -t all -l 200
 
 >Downloading wallpaper from http://i.imgur.com/wvunc.jpg to wallpapers...
 
