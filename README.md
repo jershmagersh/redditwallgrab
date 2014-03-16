@@ -7,7 +7,7 @@ Basically I was sick of downloading each awesome wallpaper I saw on the /r/wallp
 * Start by saving, forking or cloning the script locally as a .rb file.
 * Once saved you will be able to run it with your local ruby interpreter. Start by running the script with the command line argument -h:
 
->rocket:reddit_wallpaper_grabber jm$ ruby reddit_wall_grab.rb -h
+`rocket:reddit_wallpaper_grabber jm$ ruby reddit_wall_grab.rb -h`
 >Usage: reddit_wall_grab.rb [options]
 >	-v                               Verbose output
 >	-h                               Display this screen.
