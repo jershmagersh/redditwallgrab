@@ -8,7 +8,7 @@ Basically I was sick of downloading each awesome wallpaper I saw on the /r/wallp
 * Once saved you will be able to run it with your local ruby interpreter. Start by running the script with the command line argument -h:
 
 `rocket:reddit_wallpaper_grabber jm$ ruby reddit_wall_grab.rb -h`
->Usage: reddit_wall_grab.rb [options]
+`Usage: reddit_wall_grab.rb [options]`
 >	-v                               Verbose output
 >	-h                               Display this screen.
 >	-t time                          Grab the top wallpapers with specified time (hour, day, month, year, all).
