@@ -36,6 +36,10 @@ OptionParser.new do |opts|
   opts.on("-d dir", "Directory to download wallpapers to. Default is ./wallpapers.") do |dir|
   	@options[:dir] = dir 
   end
+
+  opts.on("-s subreddit", "Subreddit to download from, default is wallpapers") do |subreddit|
+        @options[:subreddit] = subreddit
+  end
 end.parse!
 
 def grab_wallpapers
@@ -43,6 +47,14 @@ def grab_wallpapers
 	limit = nil #pages, starting from last link "fullname thing id" and default count.
 	links = nil
 	after = nil #"fullname thing id" for next page.
+
+	if @options[:subreddit]
+		# do nothing for now I guess
+		# placeholder for more logic
+	else
+		@options[:subreddit] = "wallpapers"		
+	end
+	
 	
 	if @options[:limit]
 		limit = @options[:limit].to_i
@@ -55,15 +67,15 @@ def grab_wallpapers
 	
 		if @options[:top]
 			if i == 1
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}"))
+				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/#{@options[:subreddit]}.json?t=#{@options[:top]}"))
 			else
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}&count=25&after=#{after}"))
+				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/#{@options[:subreddit]}.json?t=#{@options[:top]}&count=25&after=#{after}"))
 			end		
 		elsif @options[:new]
 			if i == 1
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/new.json"))
+				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/#{@options[:subreddit]}/new.json"))
 			else
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/new.json?count=25&after=#{after}"))
+				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/#{@options[:subreddit]}/new.json?count=25&after=#{after}"))
 			end	
 		else
 			puts "Please specify whether you'd like the new (-n) or top (-t) wallpapers."
