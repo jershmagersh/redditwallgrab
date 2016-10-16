@@ -7,9 +7,11 @@ require 'json'
 @options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: reddit_wall_grab.rb [options]"
+  option_provided = false
   
   opts.on("-v", "Verbose output.") do
     @options[:verbose] = true
+    option_privided = true
   end
   
   opts.on("-h", "Display this screen.") do
@@ -19,22 +21,32 @@ OptionParser.new do |opts|
   
   opts.on("-t time", "Grab the top wallpapers with specified time (hour, day, month, year, all).") do |time|
   	@options[:top] = time
+    option_privided = true
   end
 
   opts.on("-l N", "If We should limit how many 'pages' we traverse. Default is 20.") do |n|
   	@options[:limit] = n
+    option_privided = true
   end  
   
   opts.on("-n", "Grab the newest wallpapers.") do
   	@options[:new] = true
+    option_privided = true
   end
   
   opts.on("-i", "Use imgur image links only.") do
   	@options[:imgur_only] = true
+    option_privided = true
   end
   
   opts.on("-d dir", "Directory to download wallpapers to. Default is ./wallpapers.") do |dir|
   	@options[:dir] = dir 
+    option_privided = true
+  end
+
+  unless option_provided
+    puts opts.banner
+    exit
   end
 end.parse!
 
@@ -52,23 +64,31 @@ def grab_wallpapers
 	
 	for i in 1..limit
 		wallj = nil
-	
+	    uri = nil
+
 		if @options[:top]
 			if i == 1
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}"))
+                uri = URI("https://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}")
 			else
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}&count=25&after=#{after}"))
+                uri = URI("https://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}&count=25&after=#{after}")
 			end		
 		elsif @options[:new]
 			if i == 1
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/new.json"))
+                uri = URI("https://api.reddit.com/r/wallpapers/top.json?sort=top&t=#{@options[:top]}")
 			else
-				wallj = Net::HTTP.get(URI.parse("http://api.reddit.com/r/wallpapers/new.json?count=25&after=#{after}"))
+                uri = URI("https://api.reddit.com/r/wallpapers/new.json?count=25&after=#{after}")
 			end	
 		else
 			puts "Please specify whether you'd like the new (-n) or top (-t) wallpapers."
 			exit
 		end
+
+        req = Net::HTTP::Get.new(uri)
+        req['User-Agent'] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36"
+        http = Net::HTTP.new(uri.hostname, uri.port)
+        http.use_ssl = true
+        wallj = http.request(req)
+        wallj = wallj.body
 		
 		links = parse_links_json(wallj)
 		puts "Wallpaper links parsed: #{links}" if $DEBUG
